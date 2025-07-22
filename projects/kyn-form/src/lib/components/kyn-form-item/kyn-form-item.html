@@ -1,0 +1,78 @@
+<ng-container [formGroup]="form()">
+  @let formControl = this.form().get(formItem().key);
+  <ng-container [ngTemplateOutlet]="customTemplate()"></ng-container>
+  <mat-form-field [appearance]="formItem().formStyle" [matTooltip]="formItem().tooltip || ''" [attr.class]="this.formItem().className">
+    <mat-label>{{ formItem().label }}</mat-label>
+    @switch (formItem().controlType) {
+      @case (FormItemsType.Text) {
+        <input matInput
+               [formControlName]="formItem().key"
+               [id]="formItem().key"
+               [type]="formItem().type"
+               [placeholder]="formItem().placeholder">
+      }
+      @case (FormItemsType.Select) {
+        <mat-select
+          [multiple]="formItem().multi"
+          [id]="formItem().key"
+          [formControlName]="formItem().key"
+          (openedChange)="onSelectionChange($event)">
+
+          @if (formItem().multi) {
+            <mat-select-trigger>
+              {{ formControl?.value | selectedOptionCounter: formItem().options : formItem().allText }}
+            </mat-select-trigger>
+          }
+
+          @if(formItem().options && formItem().options.length > 2){
+            <mat-option>
+              <ngx-mat-select-search
+                [formControl]="selectSearchCtrl"
+                [placeholderLabel]="formItem().placeholder || 'Search...'"
+                noEntriesFoundLabel="Nema rezultata">
+              </ngx-mat-select-search>
+            </mat-option>
+          }
+
+          @if (formItem().multi && formItem().all) {
+            <mat-option (click)="toggleAllSelection($event)" [value]="null" class="select-all-option">
+              <mat-checkbox
+                class="mat-option-checkbox"
+                [checked]="isAllComplete()"
+                [indeterminate]="isIndeterminate()">
+                {{ formItem().allTriggerText }}
+              </mat-checkbox>
+            </mat-option>
+          }
+          @if(formItem().all && !formItem().multi){
+            <mat-option [value]="formItem().allText"
+                        (click)="$event.stopPropagation(); toggleAllNotMultiSelection(); $event.stopPropagation()">
+              {{ formItem().allTriggerText }}
+            </mat-option>
+          }
+
+          @for (opt of filteredOptions(); track opt.key) {
+            <mat-option [value]="opt.key">{{ opt.value }}</mat-option>
+          }
+        </mat-select>
+      }
+      @case (FormItemsType.Password) {
+        <input matInput [type]="hide() ? 'password' : 'text'" [formControlName]="formItem().key" [id]="formItem().key" [placeholder]="formItem().placeholder" />
+      }
+    }
+    @if (formItem().controlType === FormItemsType.Password) {
+      <button
+        matIconButton
+        matSuffix
+        type="button"
+        (click)="clickEvent($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()">
+        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    }
+    @if (formControl?.invalid && (formControl?.dirty || formControl?.touched)) {
+      <mat-error> {{ getErrorMessage(formControl, formItem().validators) }} </mat-error>
+    }
+  </mat-form-field>
+</ng-container>

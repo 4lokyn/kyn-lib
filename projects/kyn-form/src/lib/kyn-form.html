@@ -1,0 +1,26 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form()" [attr.class]="className()">
+  @for (formItem of formItems(); track formItem) {
+    <kyn-form-item [formItem]="formItem"
+                   [form]="form()"
+                   [triggerOnInit]="triggerOnInit()"
+                   [isEventEmitterBased]="isEventEmitterBased()"
+                   (selectEmitter)="handleFormValueChange($event)"
+                   (textEmitter)="handleFormValueChange($event)"
+                   [customTemplate]="templateMap().get(formItem.templateName)"
+    />
+  }
+  <div class="kyn-form-row kyn-btn-container">
+    @if (buttons()) {
+      @for (button of buttons(); track button.action) {
+          <button
+            [matButton]="button.style ?? 'outlined'"
+            [attr.color]="button.color ?? 'secondary'"
+            [attr.type]="button.action === 'submit' ? 'submit' : 'button'"
+            [attr.disabled]="(button.action === 'submit' && !form().valid) || button.disabled"
+            (click)="onAction(button)">
+            {{ button.label }}
+          </button>
+      }
+    }
+  </div>
+</form>

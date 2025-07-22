@@ -6,6 +6,11 @@
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "paths": {
+      "kyn-form": [
+        "./dist/kyn-form"
+      ]
+    },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
@@ -29,6 +34,12 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/kyn-form/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/kyn-form/tsconfig.spec.json"
     }
   ]
 }
