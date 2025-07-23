@@ -1,9 +1,10 @@
 {
-  "name": "kyn-form",
-  "version": "0.0.1",
+  "name": "@alokyn/kyn-form",
+  "version": "0.1.0",
   "description": "Angular form components library with Material Design",
   "keywords": ["angular", "form", "material", "components", "library"],
   "author": "Alokyn",
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^20.1.0",
     "@angular/core": "^20.1.0",
@@ -12,6 +13,9 @@
   "dependencies": {
     "ngx-mat-select-search": "^8.0.2",
     "tslib": "^2.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "sideEffects": false
 }
