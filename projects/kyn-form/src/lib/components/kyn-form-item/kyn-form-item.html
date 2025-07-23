@@ -24,7 +24,7 @@
             </mat-select-trigger>
           }
 
-          @if(formItem().options && formItem().options.length > 2){
+          @if(formItem().options && formItem().options.length > formItem().searchDisplayLength){
             <mat-option>
               <ngx-mat-select-search
                 [formControl]="selectSearchCtrl"
@@ -33,7 +33,6 @@
               </ngx-mat-select-search>
             </mat-option>
           }
-
           @if (formItem().multi && formItem().all) {
             <mat-option (click)="toggleAllSelection($event)" [value]="null" class="select-all-option">
               <mat-checkbox

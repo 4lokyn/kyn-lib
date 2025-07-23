@@ -8,14 +8,10 @@ import { KynFormItemSelect } from '../../../projects/kyn-form/src/lib/models/kyn
 import { Product } from '../models/product';
 import {MockProduct} from './mock';
 import {KynFormItemOptions} from '../../../projects/kyn-form/src/lib/models/kyn-form-item-options';
-
-// ... KynFrom interface ostaje isti ...
-interface KynForm {
-  configureForm(): Observable<KynFormItemBase<string>[]>;
-}
+import {KynFormConfig} from '../../../projects/kyn-form/src/lib/models/kyn-form-config';
 
 @Injectable()
-export class ExampleFormService implements KynForm {
+export class ExampleFormTwoService implements KynFormConfig {
   mockProductsService: MockProduct = inject(MockProduct);
 
   constructor() {}
@@ -25,62 +21,59 @@ export class ExampleFormService implements KynForm {
    * to create a full form configuration.
    */
   configureForm(): Observable<KynFormItemBase<string>[]> {
-    // Vraćamo stream koji počinje sa dobavljanjem proizvoda
     return this.mockProductsService.getProducts().pipe(
-      // 'map' operator čeka da podaci stignu, i tek onda izvršava kod unutar sebe
       map((products: Product[]) => {
-        // KORAK 1: Transformiši proizvode u format koji tvoja 'select' komponenta očekuje
         const productOptions: KynFormItemOptions[] = products.map(product => ({
           key: product.id,
           value: product.name
         }));
 
-        // KORAK 2: Kreiraj celu konfiguraciju forme SADA kada imaš sve podatke
         const formItems: KynFormItemBase<string>[] = [
           // --- Text Input for Email ---
           new KynFormItemText({
             key: 'email',
             label: 'Email',
             placeholder: 'pat@email.com',
+            validators: [
+              {
+                key: 'email',
+                validatorFunc: Validators.email,
+                message: 'Please enter a valid email address!'
+              },
+              {
+                key: 'required',
+                validatorFunc: Validators.required,
+                message: 'This field is required!'
+              }
+            ],
             order: 1,
-            // ...ostala podešavanja
           }),
 
           // --- Password Input ---
           new KynFormItemPassword({
             key: 'password',
-            label: 'Unesite lozinku',
-            order: 2,
-            // ...ostala podešavanja
-          }),
-
-          // --- Select Input for Users ---
-          new KynFormItemSelect({
-            key: 'users',
-            label: 'Users',
-            multi: true,
-            all: true,
-            options: [
-              { key: 1, value: 'John Smith' },
-              { key: 2, value: 'Sara Jackson' }
+            label: 'Password',
+            validators: [
+              {
+                key: 'required',
+                validatorFunc: Validators.required,
+                message: 'This field is required!'
+              }
             ],
-            order: 3,
+            order: 2,
           }),
 
           // --- Select Input for Products ---
-          // Sada se kreira sa podacima koji su upravo stigli
           new KynFormItemSelect({
             key: 'products',
             label: 'Products',
             placeholder: 'Search product...',
             multi: true,
             all: true,
-            options: productOptions, // Koristimo sveže pripremljene podatke
+            options: productOptions,
             order: 4,
           })
         ];
-
-        // KORAK 3: Vrati finalnu, sortiranu listu
         return formItems.sort((a, b) => a.order - b.order);
       })
     );

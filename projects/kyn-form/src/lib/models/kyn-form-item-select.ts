@@ -7,6 +7,7 @@ export class KynFormItemSelect extends KynFormItemBase<string> {
   allText: string
   allTriggerText: string
   selectAllByDefault?: boolean;
+  searchDisplayLength?: number;
 
   constructor(options: any = {}) {
     super(options);
@@ -16,6 +17,7 @@ export class KynFormItemSelect extends KynFormItemBase<string> {
     this.all = !!options.all;
     this.allText = options.allText || 'All';
     this.allTriggerText = options.allTriggerText || 'Select All';
-    this.selectAllByDefault = !!options.selectAllByDefault;
+    this.selectAllByDefault = options.selectAllByDefault ?? true;
+    this.searchDisplayLength = options.searchDisplayLength;
   }
 }

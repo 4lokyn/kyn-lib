@@ -1,17 +1,34 @@
+<h1>Kyn Form</h1>
+
 <div class="kyn-container">
+  <div>
+    <p>Regular Form with static data</p>
+    <kyn-form
+      className="generic-form"
+      [formItems]="formOne$ | async"
+      (onFormValueChanges)="tmp($event)">
+      <ng-template named="someInputDescription">
+        <div>
+          <h2>Sign in</h2>
+          <p>This is Kyn Form</p>
+        </div>
+      </ng-template>
+    </kyn-form>
+  </div>
 
-  <h1>Kyn Form</h1>
-
-  <kyn-form
-    className="generic-form"
-    [formItems]="form$ | async"
-    (onFormValueChanges)="tmp($event)">
-    <ng-template named="someInputDescription">
-      <div>
-        <h2>Sign in</h2>
-        <p>This is Kyn Form</p>
-      </div>
-    </ng-template>
-  </kyn-form>
+  <div>
+    <p>Form with mocked data from server</p>
+    <kyn-form
+      className="generic-form"
+      [formItems]="formTwo$ | async"
+      (onFormValueChanges)="tmp($event)">
+      <ng-template named="someInputDescription">
+        <div>
+          <h2>Sign in</h2>
+          <p>This is Kyn Form</p>
+        </div>
+      </ng-template>
+    </kyn-form>
+  </div>
 
 </div>

@@ -3,6 +3,7 @@
  */
 
 export * from './lib/kyn-form';
+export * from './lib/models/kyn-form-config';
 export * from './lib/models/kyn-form-item-options';
 export * from './lib/models/kyn-form-button';
 export * from './lib/models/kyn-form-item-base';

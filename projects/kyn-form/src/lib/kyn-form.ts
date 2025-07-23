@@ -3,7 +3,9 @@ import {
   computed,
   contentChildren,
   inject,
-  input, InputSignal, OnInit,
+  input,
+  InputSignal,
+  OnInit,
   output,
   OutputEmitterRef, Signal,
   TemplateRef
